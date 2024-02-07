@@ -16,13 +16,14 @@ $libri = getAllBooks($mysqli);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="assets/css/style.css?v=<?php echo time(); ?>">
 </head>
 
 <body >
 
     <nav class="navbar text-bg-danger navbar-expand-lg text-white">
         <div class="container-fluid">
-            <a class="navbar-brand text-white" href="#">Navbar</a>
+            <img class="navbar-brand text-white" src="assets/img/logo.png" style="width: 50px;">Navbar</img>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -40,7 +41,7 @@ $libri = getAllBooks($mysqli);
 
 
 
-    <table class="table table-hover container mt-4 border">
+    <table class="table container mt-4 tabellaMain">
         <thead>
             <tr class="text-center">
                 <th scope="col">ID</th>
@@ -48,9 +49,9 @@ $libri = getAllBooks($mysqli);
                 <th scope="col">Autore</th>
                 <th scope="col">Anno</th>
                 <th scope="col">Genere</th>
-                <th scope="col"><button type="button" class="btn btn-primary d-flex mx-auto" data-bs-toggle="modal"
+                <th scope="col"><button type="button" class="btn btn-outline-danger d-flex mx-auto" data-bs-toggle="modal"
                         data-bs-target="#modaleAggiunta">
-                        <i class="bi bi-plus-circle-fill"></i>
+                        <i class="bi bi-folder-plus"></i>
                     </button></th>
             </tr>
         </thead>
@@ -67,9 +68,9 @@ $libri = getAllBooks($mysqli);
                         <td>' . $libro['genere'] . '</td>
                         <th>
                             <div class="d-flex justify-content-evenly align-items-center">
-                                <a role="button" class="btn btn-warning px-2 py-1" data-bs-toggle="modal"
+                                <a role="button" class="btn btn-outline-warning px-2 py-1" data-bs-toggle="modal"
                                     data-bs-target="#modaleUpdate_' . $libro['id'] . '"><i class="bi bi-pencil-square"></i></a>
-                                <a role="button" class="btn btn-danger px-2 py-1" href="gestione.php?action=remove&id=' . $libro['id'] . '"><i class="bi bi-x-lg"></i></a>
+                                <a role="button" class="btn btn-outline-danger px-2 py-1" href="gestione.php?action=remove&id=' . $libro['id'] . '"><i class="bi bi-x-lg"></i></a>
                             </div>
                         </th>
                     </tr>';
