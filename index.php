@@ -77,8 +77,10 @@ $utenti = AllUsers($mysqli);
                 <a role="button" class="btn btn-danger px-2 py-1" href="gestione.php?action=remove&id=' . $utente['id'] . '"><i class="bi bi-x-lg"></i></a> </th>
             </div>
          </tr></th>
-            </tr>
-        <div class="modal fade" id="modaleUpdate_' . $utente['id'] . '" tabindex="-1" aria-labelledby="modaleUpdate" aria-hidden="true">
+            </tr>';
+
+
+                echo '<div class="modal fade" id="modaleUpdate_' . $utente['id'] . '" tabindex="-1" aria-labelledby="modaleUpdate" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
