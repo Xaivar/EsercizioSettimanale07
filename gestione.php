@@ -2,7 +2,16 @@
 
 require_once "config.php";
 
-function AllUsers($mysqli){
+
+$books = [
+    "titolo" => isset($_REQUEST['titolo']) ? $_REQUEST['titolo'] : '',
+    "autore" => isset($_REQUEST['autore']) ? $_REQUEST['autore'] : '',
+    "anno_pubblicazione" => isset($_REQUEST['anno']) ? $_REQUEST['anno'] : '',
+    "genere" => isset($_REQUEST['genere']) ? $_REQUEST['genere'] : '',
+];
+
+function getAllBooks($mysqli)
+{
     $libri = [];
     $sql = "SELECT * FROM libri;";
     $res = $mysqli->query($sql);
@@ -11,31 +20,25 @@ function AllUsers($mysqli){
             $libri[] = $row;
         }
     }
-return $libri;
+    return $libri;
 }
 
 
-    $libri = [
-        "titolo" => isset($_POST['titolo']) ? $_POST['titolo'] : '',
-        "autore" => isset($_POST['autore']) ? $_POST['autore'] : '',
-        "anno_pubblicazione" => isset($_POST['anno']) ? $_POST['anno'] : '',
-        "genere" => isset($_POST['genere']) ? $_POST['genere'] : '',
-        "id" => isset($_REQUEST['id']) ? $_POST['id'] : ''
-    ];
-
- function AddUsers($mysqli, $libri){
-    $titolo = $libri['titolo'];
-    $autore = $libri['autore'];
-    $anno_pubblicazione = $libri['anno_pubblicazione'];
-    $genere = $libri['genere'];
+function addBook($mysqli, $books)
+{
+    $titolo = $books['titolo'];
+    $autore = $books['autore'];
+    $anno_pubblicazione = $books['anno_pubblicazione'];
+    $genere = $books['genere'];
 
     $sql = "INSERT INTO libri (titolo, autore, anno_pubblicazione, genere) 
                 VALUES ('$titolo', '$autore', '$anno_pubblicazione', '$genere')";
     if (!$mysqli->query($sql)) {
         echo ($mysqli->error);
     } else {
-        header('Location: index.php');
+        echo 'Record aggiunto con successo!!!';
     }
+    header('location: index.php');
 }
 
 function removeBook($mysqli, $id)
@@ -43,19 +46,12 @@ function removeBook($mysqli, $id)
     if (!$mysqli->query('DELETE FROM libri WHERE id = ' . $id)) {
         echo ($mysqli->connect_error);
     } else {
-        echo 'Record Eliminato con Successo!';
+        echo 'Libro rimosso con successo!';
     }
 }
 
- if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    AddUsers($mysqli, $libri); } 
 
-    else if(isset($_REQUEST['action']) && $_REQUEST['action'] === 'remove') {
-        removeBook($mysqli, $_REQUEST['id']);
-        exit(header('Location: index.php'));
-    }
-
-    function updateBook($mysqli, $id, $titolo, $autore, $anno_pubblicazione, $genere)
+function updateBook($mysqli, $id, $titolo, $autore, $anno_pubblicazione, $genere)
 {
     $sql = "UPDATE libri SET 
                         titolo = '" . $titolo . "', 
@@ -76,11 +72,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         updateBook($mysqli, $_POST['id'], $_POST['titoloUp'], $_POST['autoreUp'], $_POST['annoUp'], $_POST['genereUp']);
         exit(header('Location: index.php'));
     } else {
-        AddUsers($mysqli, $book);
+        addBook($mysqli, $books);
     }
 
 } else if (isset($_REQUEST['action']) && $_REQUEST['action'] === 'remove') {
     removeBook($mysqli, $_REQUEST['id']);
     exit(header('Location: index.php'));
 }
+
+
 ?>
