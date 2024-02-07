@@ -4,7 +4,6 @@ require_once 'config.php';
 require_once 'gestione.php';
 
 $utenti = AllUsers($mysqli);
-// $agg_libri = AddUsers($mysqli, $titolo, $autore, $anno, $genere);
 ?>
 
 <!DOCTYPE html>
@@ -16,6 +15,7 @@ $utenti = AllUsers($mysqli);
     <title>Libreria - Libri Per Tutti!</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
 <body>
@@ -56,69 +56,76 @@ $utenti = AllUsers($mysqli);
                 <th scope="col">Genere</th>
                 <th scope="col">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        Launch demo modal
+                        <i class="bi bi-folder-plus"></i>
                     </button>
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Aggiungi Un Libro</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form method="POST" action="gestione.php">
-                                        <div class="mb-3">
-                                            <label for="exampleInputEmail1" class="form-label">Titolo</label>
-                                            <input type="text" class="form-control" id="exampleInputEmail1"
-                                                aria-describedby="emailHelp" name="titolo">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="exampleInputPassword1" class="form-label">Autore</label>
-                                            <input type="text" class="form-control" id="exampleInputPassword1" name="autore">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="exampleInputPassword1" class="form-label">Anno</label>
-                                            <input type="number" step="1" class="form-control" id="exampleInputPassword1" name="anno">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="exampleInputPassword1" class="form-label">Genere</label>
-                                            <input type="text" class="form-control" id="exampleInputPassword1" name="genere">
-                                        </div>
-                                        <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Chiudi</button>
-                                    <button type="submit" class="btn btn-primary">Salva Cambiamenti</button>
-                                </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </th>
             </tr>
 
-        </thead> 
+        </thead>
         <tbody class="table-group-divider">
-        <?php
-        foreach ($utenti as $key =>$utente) {
-            echo '<tr>
-                <th scope="row">'.$utente['id'].'</th>
-                <td>'.$utente['titolo'].'</td>
-                <td>'.$utente['autore'].'</td>
-                <td>'.$utente['anno_pubblicazione'].'</td>
-                <td>'.$utente['genere'].'</td>
-                <th></th>
-            </tr>';
-        }
-        ?>
-       </tbody>
-            
+            <?php
+            foreach ($utenti as $key => $utente) {
+                echo '<tr>
+                <th scope="row">' . $utente['id'] . '</th>
+                <td>' . $utente['titolo'] . '</td>
+                <td>' . $utente['autore'] . '</td>
+                <td>' . $utente['anno_pubblicazione'] . '</td>
+                <td>' . $utente['genere'] . '</td>
+                <th> <div class="d-flex justify-content-evenly align-items-center">
+                <a role="button" class="btn btn-warning px-2 py-1"  data-bs-toggle="modal"
+                data-bs-target="#modaleUpdate_' . $utente['id'] . '" ><i class="bi bi-pencil-square"></i></a>
+                <a role="button" class="btn btn-danger px-2 py-1" href="gestione.php?action=remove&id=' . $utente['id'] . '"><i class="bi bi-x-lg"></i></a> </th>
+            </div>
+         </tr></th>
+            </tr>
+        <div class="modal fade" id="modaleUpdate_' . $utente['id'] . '" tabindex="-1" aria-labelledby="modaleUpdate" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5">Modifica i dati</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" action="gestione.php">
+                            <div class="mb-3">
+                            <input type="hidden" name="id" value="' . $utente['id'] . '">
+                                <label for="titoloLibro" class="form-label">Titolo</label>
+                                <input type="text" class="form-control" id="titoloLibro" aria-describedby="titoloLibro"
+                                    name="titoloUp" value="' . $utente['titolo'] . '">
+                            </div>
+                            <div class="mb-3">
+                                <label for="autoreLibro" class="form-label">Autore</label>
+                                <input type="text" class="form-control" id="autoreLibro" name="autoreUp" value="' . $utente['autore'] . '">
+                            </div>
+                            <div class="mb-3">
+                                <label for="annoLibro" class="form-label">Anno di pubblicazione</label>
+                                <input type="number" step="1" class="form-control" id="annoLibro" name="annoUp" value="' . $utente['anno_pubblicazione'] . '">
+                            </div>
+                            <div class="mb-3">
+                                <label for="genereLibro" class="form-label">Genere</label>
+                                <input type="text" class="form-control" id="genereLibro" name="genereUp" value="' . $utente['genere'] . '">
+                            </div>
+                            <div class="modal-footer border-0">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+                                <button type="submit" class="btn btn-primary" name="action" value="update">Aggiorna libro</button>
+                            </div>
+                        </form>
+                    </div>
         
-        
+                </div>
+            </div>
+        </div>';
+
+
+
+
+
+            }
+            ?>
+        </tbody>
+
+
+
     </table>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
@@ -127,3 +134,41 @@ $utenti = AllUsers($mysqli);
 </body>
 
 </html>
+
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Aggiungi Un Libro</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="gestione.php">
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Titolo</label>
+                        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                            name="titolo">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Autore</label>
+                        <input type="text" class="form-control" id="exampleInputPassword1" name="autore">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Anno</label>
+                        <input type="number" step="1" class="form-control" id="exampleInputPassword1" name="anno">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Genere</label>
+                        <input type="text" class="form-control" id="exampleInputPassword1" name="genere">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+                        <button type="submit" class="btn btn-primary">Salva Cambiamenti</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
